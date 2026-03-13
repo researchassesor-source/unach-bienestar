@@ -5,7 +5,7 @@
 
 // ── CONFIGURACIÓN ─────────────────────────────────
 // 🔧 REEMPLAZA esta URL con tu Web App URL de Google Apps Script
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzo7rjb3L0NKrN1pqQ4aucfSMdQZyvwQo2BSM8FiPRtZ9A5ll0tHfG3ZXgj0HX9U_fgQg/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/TU_SCRIPT_ID_AQUI/exec';
 
 // ── SECUENCIA DE PANTALLAS ─────────────────────────
 const SCREENS = [
@@ -497,27 +497,60 @@ async function submitSurvey() {
 
   goToScreen('screen-sending');
 
-  try {
-    await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    // no-cors no devuelve respuesta — asumimos éxito
+  // Envío mediante iframe oculto para evitar bloqueos CORS de GitHub Pages
+  sendViaIframe(data, baremos);
+}
+
+function sendViaIframe(data, baremos) {
+  // Crea un iframe invisible que absorbe la redirección de Apps Script
+  const iframeName = 'hidden_submit_' + Date.now();
+  const iframe = document.createElement('iframe');
+  iframe.name = iframeName;
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+
+  // Crea un formulario oculto que envía a Apps Script como GET con parámetro payload
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = GOOGLE_SCRIPT_URL;
+  form.target = iframeName;
+  form.style.display = 'none';
+
+  // Apps Script recibirá los datos como e.parameter.payload
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify(data);
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+
+  // Cuando el iframe cargue = Apps Script respondió = éxito
+  let done = false;
+  iframe.onload = () => {
+    if (done) return;
+    done = true;
+    cleanup();
     goToScreen('screen-results');
     renderResults(baremos);
-  } catch (err) {
-    console.error('Error al enviar:', err);
-    // Guardar localmente como fallback
-    localStorage.setItem('unach_survey_backup_' + data.id_anonimo, JSON.stringify(data));
+  };
+
+  // Timeout de seguridad: si en 12 segundos no responde, mostramos resultados igual
+  const timeout = setTimeout(() => {
+    if (done) return;
+    done = true;
+    cleanup();
     goToScreen('screen-results');
     renderResults(baremos);
-    const errMsg = document.createElement('div');
-    errMsg.style.cssText = 'background:#FEF3C7;border:1px solid #FCD34D;border-radius:8px;padding:14px;font-size:13px;color:#92400E;margin-top:12px';
-    errMsg.innerHTML = '⚠ Hubo un problema al enviar al servidor. Tus respuestas se guardaron localmente en este dispositivo. Contacta al equipo investigador.';
-    document.getElementById('resultsContent').prepend(errMsg);
+  }, 12000);
+
+  function cleanup() {
+    clearTimeout(timeout);
+    try { document.body.removeChild(form); } catch(e) {}
+    setTimeout(() => { try { document.body.removeChild(iframe); } catch(e) {} }, 2000);
   }
+
+  form.submit();
 }
 
 // ── INIT ────────────────────────────────────────────
