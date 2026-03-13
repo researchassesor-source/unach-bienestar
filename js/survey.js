@@ -5,7 +5,7 @@
 
 // ── CONFIGURACIÓN ─────────────────────────────────
 // 🔧 REEMPLAZA esta URL con tu Web App URL de Google Apps Script
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/TU_SCRIPT_ID_AQUI/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyP9gGmcHGUgYdqtosrskW4TEEx7ENm5g-GNNPG8ssQXjPzSyR5dzFTQjaY6eVx85VWFA/exec';
 
 // ── SECUENCIA DE PANTALLAS ─────────────────────────
 const SCREENS = [
