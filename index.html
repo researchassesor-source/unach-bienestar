@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proyecto Integral de Bienestar Estudiantil – UNACH</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ░░ HEADER ░░ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <img src="https://riedesarrollo.org/wp-content/uploads/2017/04/logoUNACH-300x296.png" alt="UNACH" class="logo" onerror="this.style.display='none'">
+      <div class="brand-text">
+        <span class="brand-name">UNACH</span>
+        <span class="brand-full">Universidad Nacional de Chimborazo</span>
+      </div>
+    </div>
+    <div class="header-title">
+      <span>Proyecto Integral de Bienestar Estudiantil</span>
+    </div>
+  </div>
+  <!-- progress bar -->
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+    <span class="progress-label" id="progressLabel">Inicio</span>
+  </div>
+</header>
+
+<!-- ░░ MAIN ░░ -->
+<main class="survey-container" id="surveyContainer">
+
+  <!-- ══ PANTALLA 0: BIENVENIDA ══ -->
+  <section class="screen active" id="screen-welcome">
+    <div class="welcome-card">
+      <div class="welcome-badge">Proyecto Institucional · 2026</div>
+      <h1 class="welcome-title">Proyecto Integral de<br><em>Bienestar Estudiantil</em></h1>
+      <p class="welcome-sub">Salud Mental · Actividades Recreativas · Adaptación Académica</p>
+      <div class="welcome-meta">
+        <span>⏱ 15–20 minutos</span>
+        <span>🔒 Datos confidenciales</span>
+        <span>📋 Participación voluntaria</span>
+      </div>
+      <p class="welcome-desc">
+        Estás invitado/a a participar en este estudio sobre bienestar estudiantil. Tu participación es completamente voluntaria
+        y puedes retirarte en cualquier momento sin consecuencias académicas o administrativas.
+      </p>
+      <button class="btn-primary" onclick="goToScreen('screen-consent')">Comenzar encuesta →</button>
+    </div>
+  </section>
+
+  <!-- ══ PANTALLA 1: CONSENTIMIENTO ══ -->
+  <section class="screen" id="screen-consent">
+    <div class="block-card">
+      <div class="block-label">Consentimiento Informado</div>
+      <h2 class="block-title">Antes de continuar</h2>
+
+      <div class="legal-box">
+        <h3>Información importante</h3>
+        <p>Este estudio es conducido por el equipo investigador de la UNACH con fines exclusivamente académicos y de mejora del bienestar estudiantil. Sus datos serán tratados conforme a la <strong>Ley Orgánica de Protección de Datos Personales del Ecuador (LOPDP)</strong>.</p>
+        <ul>
+          <li>Sus datos personales y sensibles son confidenciales y de uso exclusivo para investigación.</li>
+          <li>Puede ejercer sus derechos de acceso, rectificación, eliminación y portabilidad en cualquier momento.</li>
+          <li>La encuesta incluye preguntas de carácter sensible. Puede omitir cualquier pregunta que le genere incomodidad.</li>
+          <li>Al responder "Sí, acepto", otorga su consentimiento libre, informado y expreso conforme al Art. 9 de la LOPDP.</li>
+        </ul>
+      </div>
+
+      <!-- LOPDP notice -->
+      <div class="lopdp-box">
+        <div class="lopdp-icon">🛡</div>
+        <div>
+          <strong>Protección de Datos Personales — LOPDP Ecuador</strong><br>
+          <small>De conformidad con la Ley Orgánica de Protección de Datos Personales del Ecuador, la información recopilada será tratada con estricta confidencialidad, almacenada de forma segura y utilizada únicamente para los fines de investigación descritos. El responsable del tratamiento es el equipo investigador de la Universidad Nacional de Chimborazo (UNACH). Usted puede revocar su consentimiento o solicitar la eliminación de sus datos contactando a: <em>bienestar@unach.edu.ec</em></small>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">¿Acepta participar en este estudio?</label>
+        <div class="radio-group">
+          <label class="radio-opt" id="consent-yes">
+            <input type="radio" name="consent" value="si" onchange="handleConsent(this)">
+            <span class="radio-custom"></span>
+            <span>Sí, acepto participar</span>
+          </label>
+          <label class="radio-opt" id="consent-no">
+            <input type="radio" name="consent" value="no" onchange="handleConsent(this)">
+            <span class="radio-custom"></span>
+            <span>No, no acepto participar</span>
+          </label>
+        </div>
+        <div id="consent-no-msg" class="alert-info" style="display:none">
+          Gracias por tu tiempo. La encuesta ha finalizado. Puedes cerrar esta ventana.
+        </div>
+      </div>
+
+      <div class="question-group" id="modalidad-group" style="display:none">
+        <label class="question-label">Modalidad de participación</label>
+        <div class="radio-group">
+          <label class="radio-opt">
+            <input type="radio" name="modalidad" value="anonima">
+            <span class="radio-custom"></span>
+            <span>Deseo participar de forma completamente anónima</span>
+          </label>
+          <label class="radio-opt">
+            <input type="radio" name="modalidad" value="institucional">
+            <span class="radio-custom"></span>
+            <span>Acepto que mis respuestas se asocien a mi registro institucional (solo fines de apoyo)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="nav-row" id="consent-nav" style="display:none">
+        <button class="btn-primary" onclick="startSurvey()">Continuar →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE A: SOCIODEMOGRÁFICOS ══ -->
+  <section class="screen" id="screen-A">
+    <div class="block-card">
+      <div class="block-label">Bloque A</div>
+      <h2 class="block-title">Datos Sociodemográficos</h2>
+      <p class="block-desc">Información general sobre tu situación actual.</p>
+
+      <div class="question-group">
+        <label class="question-label">1. Edad (en años) <span class="req">*</span></label>
+        <input type="number" class="input-text" id="A1" min="16" max="60" placeholder="Ej: 21" required>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">2. Sexo biológico <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="A2" value="Femenino"><span class="radio-custom"></span><span>Femenino</span></label>
+          <label class="radio-opt"><input type="radio" name="A2" value="Masculino"><span class="radio-custom"></span><span>Masculino</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">3. Identidad de género</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="A3" value="Mujer"><span class="radio-custom"></span><span>Mujer</span></label>
+          <label class="radio-opt"><input type="radio" name="A3" value="Hombre"><span class="radio-custom"></span><span>Hombre</span></label>
+          <label class="radio-opt"><input type="radio" name="A3" value="No binario/a"><span class="radio-custom"></span><span>No binario/a</span></label>
+          <label class="radio-opt"><input type="radio" name="A3" value="Prefiero no responder"><span class="radio-custom"></span><span>Prefiero no responder</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">4. Orientación sexual</label>
+        <div class="radio-group radio-group--wrap">
+          <label class="radio-opt"><input type="radio" name="A4" value="Heterosexual"><span class="radio-custom"></span><span>Heterosexual</span></label>
+          <label class="radio-opt"><input type="radio" name="A4" value="Homosexual"><span class="radio-custom"></span><span>Homosexual</span></label>
+          <label class="radio-opt"><input type="radio" name="A4" value="Bisexual"><span class="radio-custom"></span><span>Bisexual</span></label>
+          <label class="radio-opt"><input type="radio" name="A4" value="Pansexual"><span class="radio-custom"></span><span>Pansexual</span></label>
+          <label class="radio-opt"><input type="radio" name="A4" value="Asexual"><span class="radio-custom"></span><span>Asexual</span></label>
+          <label class="radio-opt"><input type="radio" name="A4" value="Prefiero no responder"><span class="radio-custom"></span><span>Prefiero no responder</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">5. ¿Tiene alguna discapacidad o enfermedad diagnosticada?</label>
+        <div class="radio-group radio-group--wrap">
+          <label class="radio-opt"><input type="radio" name="A5" value="Ninguna"><span class="radio-custom"></span><span>Ninguna</span></label>
+          <label class="radio-opt"><input type="radio" name="A5" value="Discapacidad física"><span class="radio-custom"></span><span>Discapacidad física</span></label>
+          <label class="radio-opt"><input type="radio" name="A5" value="Discapacidad sensorial"><span class="radio-custom"></span><span>Discapacidad sensorial</span></label>
+          <label class="radio-opt"><input type="radio" name="A5" value="Discapacidad intelectual"><span class="radio-custom"></span><span>Discapacidad intelectual</span></label>
+          <label class="radio-opt"><input type="radio" name="A5" value="Discapacidad psicosocial"><span class="radio-custom"></span><span>Discapacidad psicosocial</span></label>
+          <label class="radio-opt"><input type="radio" name="A5" value="Enfermedad catastrófica"><span class="radio-custom"></span><span>Enfermedad catastrófica o rara</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">6. Lugar de procedencia (ciudad o cantón)</label>
+        <input type="text" class="input-text" id="A6" placeholder="Ej: Riobamba">
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">7. Lugar de residencia actual</label>
+        <input type="text" class="input-text" id="A7" placeholder="Ej: Riobamba">
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">8. Zona de residencia actual</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="A8" value="Urbana"><span class="radio-custom"></span><span>Urbana</span></label>
+          <label class="radio-opt"><input type="radio" name="A8" value="Periurbana"><span class="radio-custom"></span><span>Periurbana</span></label>
+          <label class="radio-opt"><input type="radio" name="A8" value="Rural"><span class="radio-custom"></span><span>Rural</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">9. Tiempo viviendo en la ciudad actual</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="A9" value="Menos de 6 meses"><span class="radio-custom"></span><span>Menos de 6 meses</span></label>
+          <label class="radio-opt"><input type="radio" name="A9" value="6 a 12 meses"><span class="radio-custom"></span><span>De 6 a 12 meses</span></label>
+          <label class="radio-opt"><input type="radio" name="A9" value="1 a 3 años"><span class="radio-custom"></span><span>De 1 a 3 años</span></label>
+          <label class="radio-opt"><input type="radio" name="A9" value="Más de 3 años"><span class="radio-custom"></span><span>Más de 3 años</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">10. Tipo de alojamiento actual</label>
+        <div class="radio-group radio-group--wrap">
+          <label class="radio-opt"><input type="radio" name="A10" value="Residencia universitaria"><span class="radio-custom"></span><span>Residencia universitaria</span></label>
+          <label class="radio-opt"><input type="radio" name="A10" value="Arriendo compartido"><span class="radio-custom"></span><span>Arriendo compartido</span></label>
+          <label class="radio-opt"><input type="radio" name="A10" value="Arriendo individual"><span class="radio-custom"></span><span>Arriendo individual</span></label>
+          <label class="radio-opt"><input type="radio" name="A10" value="Vive con familia"><span class="radio-custom"></span><span>Vive con familia</span></label>
+          <label class="radio-opt"><input type="radio" name="A10" value="Casa propia"><span class="radio-custom"></span><span>Casa propia</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">11. Financiamiento de estudios (puede marcar varias)</label>
+        <div class="check-group">
+          <label class="check-opt"><input type="checkbox" name="A11" value="Beca académica"><span class="check-custom"></span><span>Beca académica o institucional</span></label>
+          <label class="check-opt"><input type="checkbox" name="A11" value="Crédito educativo"><span class="check-custom"></span><span>Crédito educativo</span></label>
+          <label class="check-opt"><input type="checkbox" name="A11" value="Apoyo familiar"><span class="check-custom"></span><span>Apoyo económico familiar</span></label>
+          <label class="check-opt"><input type="checkbox" name="A11" value="Trabajo formal"><span class="check-custom"></span><span>Trabajo propio (empleo formal)</span></label>
+          <label class="check-opt"><input type="checkbox" name="A11" value="Trabajo informal"><span class="check-custom"></span><span>Trabajo ocasional o informal</span></label>
+          <label class="check-opt"><input type="checkbox" name="A11" value="Emprendimiento"><span class="check-custom"></span><span>Emprendimiento propio</span></label>
+          <label class="check-opt"><input type="checkbox" name="A11" value="Ahorros personales"><span class="check-custom"></span><span>Ahorros personales</span></label>
+          <label class="check-opt"><input type="checkbox" name="A11" value="Apoyo de terceros"><span class="check-custom"></span><span>Apoyo de terceros</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">12. Frecuencia de contacto con su familia o red de apoyo</label>
+        <div class="likert-scale" data-name="A12" data-labels="Nunca,Mensual,Semanal,Varias veces/semana,Diario" data-values="0,1,2,3,4"></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-consent')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-A','screen-B')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE B ══ -->
+  <section class="screen" id="screen-B">
+    <div class="block-card">
+      <div class="block-label">Bloque B</div>
+      <h2 class="block-title">Adaptación Académica</h2>
+      <p class="block-desc">Las siguientes preguntas se refieren a las <strong>ÚLTIMAS 2 SEMANAS</strong>.</p>
+      <div class="scale-legend">0 = Nunca · 1 = Rara vez · 2 = A veces · 3 = Casi siempre · 4 = Siempre</div>
+
+      <div class="likert-table" id="likertB">
+        <div class="lt-header">
+          <div class="lt-q">Afirmación</div>
+          <div class="lt-opts"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span></div>
+        </div>
+      </div>
+      <script>
+        const bItems = [
+          ["B1","Me he sentido motivado/a con mis estudios.","(Interés o entusiasmo por asistir a clases, participar o realizar tareas.)",false],
+          ["B2","He tenido dificultades para concentrarme en clases o al estudiar.","(Por ejemplo, distraerse fácilmente o perder el hilo de la explicación.)",true],
+          ["B3","Me he sentido sobrepasado/a por la carga académica.","(Sensación de que tareas, trabajos o exámenes superan su capacidad de manejo.)",true],
+          ["B4","Me he sentido capaz de cumplir con las exigencias académicas.","(Percepción de que puede responder adecuadamente a evaluaciones y responsabilidades.)",false],
+          ["B5","He logrado organizar adecuadamente mi tiempo de estudio.","(Planificar horarios, cumplir plazos y distribuir tareas sin atrasos importantes.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertB',bItems,5));
+      </script>
+
+      <div class="question-group" style="margin-top:2rem">
+        <label class="question-label">6. ¿Cómo evaluaría su rendimiento académico general?</label>
+        <div class="likert-scale" data-name="B6" data-labels="Muy bajo,Bajo,Medio,Alto,Muy alto" data-values="1,2,3,4,5"></div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">7. Porcentaje de clases asistidas este semestre</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="B7" value="1"><span class="radio-custom"></span><span>Menor al 50%</span></label>
+          <label class="radio-opt"><input type="radio" name="B7" value="2"><span class="radio-custom"></span><span>Entre 50% y 70%</span></label>
+          <label class="radio-opt"><input type="radio" name="B7" value="3"><span class="radio-custom"></span><span>Entre 70% y 90%</span></label>
+          <label class="radio-opt"><input type="radio" name="B7" value="4"><span class="radio-custom"></span><span>Más del 90%</span></label>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-A')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-B','screen-C')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE C ══ -->
+  <section class="screen" id="screen-C">
+    <div class="block-card">
+      <div class="block-label">Bloque C</div>
+      <h2 class="block-title">Síntomas de Salud Mental</h2>
+      <p class="block-desc">Últimas <strong>2 semanas</strong>. 0 = No me ha pasado · 1 = Varios días · 2 = Más de la mitad · 3 = Casi todos los días</p>
+
+      <div class="section-sub">Depresión (PHQ-9)</div>
+      <div class="scale-legend">0 = No me ha pasado · 1 = Varios días · 2 = Más de la mitad de los días · 3 = Casi todos los días</div>
+      <div class="likert-table" id="likertPHQ"></div>
+      <script>
+        const phqItems = [
+          ["C1","Poco interés o placer en hacer cosas.","(Actividades que normalmente disfruta: salir, estudiar o compartir.)",false],
+          ["C2","Sentirse triste, deprimido/a o sin esperanza.","(Sensación persistente de desánimo, vacío o falta de expectativas positivas.)",false],
+          ["C3","Problemas para dormir o dormir demasiado.","(Dificultad para conciliar el sueño o dormir más horas de lo habitual.)",false],
+          ["C4","Sentirse cansado/a o con poca energía.","(Sensación de fatiga constante incluso después de descansar.)",false],
+          ["C5","Poco apetito o comer en exceso.","(Cambios notorios en la cantidad de comida que consume.)",false],
+          ["C6","Sentirse mal consigo mismo/a o sentir que ha fallado.","(Pensamientos de culpa, inutilidad o autocrítica excesiva.)",false],
+          ["C7","Dificultad para concentrarse.","(Al leer, estudiar, escuchar clases o ver televisión.)",false],
+          ["C8","Lentitud para moverse o hablar, o lo contrario: estar muy inquieto/a.","(Cambios notables en su ritmo habitual.)",false],
+          ["C9","Pensamientos de que estaría mejor muerto/a o de hacerse daño.","(Ideas relacionadas con no querer seguir viviendo o lastimarse.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertPHQ',phqItems,4));
+      </script>
+
+      <div class="section-sub">Ansiedad (GAD-7)</div>
+      <div class="likert-table" id="likertGAD"></div>
+      <script>
+        const gadItems = [
+          ["C10","Nerviosismo, ansiedad o sensación de estar al límite.","(Sentirse tenso/a, intranquilo/a sin razón clara.)",false],
+          ["C11","No poder dejar de preocuparse o controlar las preocupaciones.","(Pensamientos que aparecen repetidamente y cuesta detenerlos.)",false],
+          ["C12","Preocuparse demasiado por diferentes cosas.","(Estudios, familia, dinero u otras responsabilidades.)",false],
+          ["C13","Dificultad para relajarse.","(Sensación de que el cuerpo o la mente no logran descansar.)",false],
+          ["C14","Estar tan inquieto/a que le resulta difícil quedarse quieto/a.","(Necesidad constante de moverse o caminar.)",false],
+          ["C15","Irritabilidad o facilidad para molestarse.","(Enojarse o frustrarse por situaciones pequeñas.)",false],
+          ["C16","Sensación de que algo terrible podría suceder.","(Miedo persistente a que ocurra algo malo.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertGAD',gadItems,4));
+      </script>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-B')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-C','screen-D')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE D ══ -->
+  <section class="screen" id="screen-D">
+    <div class="block-card">
+      <div class="block-label">Bloque D</div>
+      <h2 class="block-title">Bienestar Subjetivo y Apoyo Social</h2>
+      <p class="block-desc">Últimas <strong>2 semanas</strong>.</p>
+
+      <div class="section-sub">Bienestar Subjetivo (WHO-5)</div>
+      <div class="scale-legend">0 = Nunca · 1 = Rara vez · 2 = A veces · 3 = Casi siempre · 4 = Siempre</div>
+      <div class="likert-table" id="likertWHO"></div>
+      <script>
+        const whoItems = [
+          ["D1","Me sentí alegre y de buen ánimo.","(Con sentimientos de felicidad, entusiasmo o satisfacción general.)",false],
+          ["D2","Me sentí calmado/a y relajado/a.","(Sin tensión constante, estrés excesivo o nerviosismo.)",false],
+          ["D3","Me sentí lleno/a de energía.","(Con vitalidad suficiente para estudiar y realizar actividades.)",false],
+          ["D4","Sentí interés por mis actividades diarias.","(Motivación por asistir a clases, realizar tareas o actividades personales.)",false],
+          ["D5","Me sentí capaz de afrontar mis problemas.","(Con sensación de control o capacidad para manejar dificultades.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertWHO',whoItems,5));
+      </script>
+
+      <div class="section-sub">Apoyo Social (MOS)</div>
+      <div class="scale-legend">1 = Nunca · 2 = Rara vez · 3 = A veces · 4 = Casi siempre · 5 = Siempre</div>
+      <div class="likert-table" id="likertMOS"></div>
+      <script>
+        const mosItems = [
+          ["D6","Tengo a alguien que me escuche cuando lo necesito.","(Persona que me presta atención y me permite expresar lo que siento.)",false],
+          ["D7","Recibo apoyo emocional cuando lo necesito.","(Comprensión, afecto o consuelo ante dificultades.)",false],
+          ["D8","Tengo ayuda práctica si la requiero.","(Apoyo concreto como dinero, transporte, ayuda con tareas.)",false],
+          ["D9","Me siento acompañado/a.","(Sensación de no estar solo/a y contar con alguien cercano.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertMOS',mosItems,5,1));
+      </script>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-C')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-D','screen-E')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE E ══ -->
+  <section class="screen" id="screen-E">
+    <div class="block-card">
+      <div class="block-label">Bloque E</div>
+      <h2 class="block-title">Estrés Contextual y Vivienda</h2>
+      <p class="block-desc">Último <strong>mes</strong>. 0 = Ninguna dificultad · 1 = Leve · 2 = Moderada · 3 = Alta · 4 = Muy alta</p>
+      <div class="likert-table" id="likertE"></div>
+      <script>
+        const eItems = [
+          ["E1","Dificultad para cubrir gastos básicos.","(Alimentación, transporte, materiales de estudio o servicios básicos.)",false],
+          ["E2","Estrés relacionado con su vivienda actual.","(Ruido, hacinamiento, inseguridad o condiciones inadecuadas.)",false],
+          ["E3","Conflictos frecuentes en el lugar donde vive.","(Discusiones con compañeros, familiares o vecinos.)",false],
+          ["E4","Inestabilidad residencial o riesgo de perder su alojamiento.","(Cambios de vivienda, desalojo o incertidumbre sobre dónde vivirá.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertE',eItems,5));
+      </script>
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-D')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-E','screen-F')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE F: RECREACIÓN ══ -->
+  <section class="screen" id="screen-F">
+    <div class="block-card">
+      <div class="block-label">Bloque F</div>
+      <h2 class="block-title">Recreación y Turismo</h2>
+      <p class="block-desc">Último <strong>año</strong>.</p>
+
+      <div class="question-group">
+        <label class="question-label">1. Frecuencia de viajes recreativos fuera de su ciudad</label>
+        <div class="likert-scale" data-name="F1" data-labels="Ninguno,1 vez,2 veces,3–4 veces,5 o más" data-values="0,1,2,3,4"></div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">2. Tipo principal de turismo realizado</label>
+        <div class="radio-group radio-group--wrap">
+          <label class="radio-opt"><input type="radio" name="F2" value="Naturaleza"><span class="radio-custom"></span><span>Naturaleza</span></label>
+          <label class="radio-opt"><input type="radio" name="F2" value="Cultural o urbano"><span class="radio-custom"></span><span>Cultural o urbano</span></label>
+          <label class="radio-opt"><input type="radio" name="F2" value="Bienestar"><span class="radio-custom"></span><span>Bienestar</span></label>
+          <label class="radio-opt"><input type="radio" name="F2" value="Religioso"><span class="radio-custom"></span><span>Religioso</span></label>
+          <label class="radio-opt"><input type="radio" name="F2" value="Voluntariado"><span class="radio-custom"></span><span>Voluntariado</span></label>
+          <label class="radio-opt"><input type="radio" name="F2" value="Visita familiar"><span class="radio-custom"></span><span>Visita familiar</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">3. Duración promedio de viajes (días)</label>
+        <input type="number" class="input-text" id="F3" min="0" max="60" placeholder="Ej: 3">
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">4. Modalidad de viaje</label>
+        <div class="radio-group radio-group--wrap">
+          <label class="radio-opt"><input type="radio" name="F4" value="Solo/a"><span class="radio-custom"></span><span>Solo/a</span></label>
+          <label class="radio-opt"><input type="radio" name="F4" value="En pareja"><span class="radio-custom"></span><span>En pareja</span></label>
+          <label class="radio-opt"><input type="radio" name="F4" value="Con familia"><span class="radio-custom"></span><span>Con familia</span></label>
+          <label class="radio-opt"><input type="radio" name="F4" value="Con amigos"><span class="radio-custom"></span><span>Con amigos</span></label>
+          <label class="radio-opt"><input type="radio" name="F4" value="Tour organizado"><span class="radio-custom"></span><span>Tour organizado</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">5. Actividades realizadas (puede marcar varias)</label>
+        <div class="check-group">
+          <label class="check-opt"><input type="checkbox" name="F5" value="Trekking"><span class="check-custom"></span><span>Caminatas o trekking</span></label>
+          <label class="check-opt"><input type="checkbox" name="F5" value="Playa o descanso"><span class="check-custom"></span><span>Playa o descanso</span></label>
+          <label class="check-opt"><input type="checkbox" name="F5" value="Actividades deportivas"><span class="check-custom"></span><span>Actividades deportivas</span></label>
+          <label class="check-opt"><input type="checkbox" name="F5" value="Actividades culturales"><span class="check-custom"></span><span>Actividades culturales</span></label>
+          <label class="check-opt"><input type="checkbox" name="F5" value="Socialización"><span class="check-custom"></span><span>Socialización o eventos</span></label>
+          <label class="check-opt"><input type="checkbox" name="F5" value="Meditación"><span class="check-custom"></span><span>Meditación o retiros</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">6. Impacto de los viajes en su estado de ánimo (0–10)</label>
+        <p class="hint-text">0 = No influyeron · 10 = Mejoraron significativamente mi bienestar</p>
+        <div class="slider-wrap">
+          <input type="range" class="slider" id="F6" min="0" max="10" value="5" oninput="document.getElementById('F6val').textContent=this.value">
+          <span class="slider-val" id="F6val">5</span>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">7. Impacto de actividades recreativas locales en su bienestar (0–10)</label>
+        <div class="slider-wrap">
+          <input type="range" class="slider" id="F7" min="0" max="10" value="5" oninput="document.getElementById('F7val').textContent=this.value">
+          <span class="slider-val" id="F7val">5</span>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-E')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-F','screen-G')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE G: IDEACIÓN SUICIDA ══ -->
+  <section class="screen" id="screen-G">
+    <div class="block-card">
+      <div class="block-label">Bloque G</div>
+      <h2 class="block-title">Tema Sensible</h2>
+      <div class="alert-sensitive">
+        <strong>⚠ Aviso importante:</strong> Este bloque aborda un tema sensible. Puedes omitirlo si lo deseas.
+        Si estás en crisis, comunícate con la <strong>Línea de Crisis del MSP Ecuador: 1800-4444-8</strong> o acude al servicio de bienestar de la UNACH.
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">1. En las últimas 4 semanas, ¿ha tenido pensamientos de querer morir o hacerse daño?</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="G1" value="0"><span class="radio-custom"></span><span>No</span></label>
+          <label class="radio-opt"><input type="radio" name="G1" value="1"><span class="radio-custom"></span><span>Sí</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">2. En las últimas 4 semanas, ¿ha tenido intención específica de hacerse daño?</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="G2" value="0"><span class="radio-custom"></span><span>No</span></label>
+          <label class="radio-opt"><input type="radio" name="G2" value="1"><span class="radio-custom"></span><span>Sí</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">3. A lo largo de su vida, ¿alguna vez ha intentado suicidarse o hacerse daño con intención de morir?</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="G3" value="0"><span class="radio-custom"></span><span>No</span></label>
+          <label class="radio-opt"><input type="radio" name="G3" value="1"><span class="radio-custom"></span><span>Sí</span></label>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-F')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-G','screen-H')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE H ══ -->
+  <section class="screen" id="screen-H">
+    <div class="block-card">
+      <div class="block-label">Bloque H</div>
+      <h2 class="block-title">Consumo de Sustancias</h2>
+      <p class="block-desc">Últimos <strong>2 meses</strong>. Sus respuestas son confidenciales.</p>
+
+      <div class="section-sub">Frecuencia de consumo</div>
+      <div class="scale-legend">0 = Nunca · 1 = Una vez · 2 = 2–4 veces · 3 = Varias veces/semana · 4 = Diario o casi diario</div>
+      <div class="likert-table" id="likertH1"></div>
+      <script>
+        const h1Items = [
+          ["H1","Alcohol","(Cerveza, vino, licores, etc.)",false],
+          ["H2","Tabaco o nicotina","(Cigarrillos, vaporizadores, tabaco calentado.)",false],
+          ["H3","Cannabis","(Marihuana, hachís, extractos.)",false],
+          ["H4","Sustancias sujetas a fiscalización","(Estimulantes, alucinógenos, inhalantes, etc.)",false],
+          ["H5","Medicamentos sin receta médica","(Tranquilizantes, somníferos o estimulantes para estudiar.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertH1',h1Items,5));
+      </script>
+
+      <div class="section-sub">Impacto del consumo (último mes)</div>
+      <div class="scale-legend">0 = Nunca · 1 = Rara vez · 2 = A veces · 3 = Casi siempre</div>
+      <div class="likert-table" id="likertH2"></div>
+      <script>
+        const h2Items = [
+          ["H6","He sentido un fuerte deseo o necesidad de consumir alguna sustancia.","",false],
+          ["H7","El consumo ha interferido con mis responsabilidades académicas.","(Asistencia, tareas o exámenes.)",false],
+          ["H8","He consumido sustancias para reducir el estrés o la ansiedad.","",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertH2',h2Items,4));
+      </script>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-G')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-H','screen-I')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE I ══ -->
+  <section class="screen" id="screen-I">
+    <div class="block-card">
+      <div class="block-label">Bloque I</div>
+      <h2 class="block-title">Experiencias de Violencia</h2>
+      <div class="alert-sensitive">
+        <strong>⚠ Tema sensible.</strong> Responda solo si se siente cómodo/a. Últimos <strong>2 meses</strong>.
+      </div>
+      <div class="scale-legend">0 = Nunca · 1 = Una vez · 2 = Un par de veces · 3 = De forma recurrente</div>
+      <div class="likert-table" id="likertI"></div>
+      <script>
+        const iItems = [
+          ["I1","Abuso emocional.","(Insultado/a, humillado/a, amenazado/a o controlado/a excesivamente.)",false],
+          ["I2","Abuso físico.","(Golpes, empujones, tirones o cualquier agresión física.)",false],
+          ["I3","Abuso o acoso sexual.","(Contacto físico no deseado, comentarios inapropiados o presión para actos sin consentimiento.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertI',iItems,4));
+      </script>
+
+      <div class="question-group">
+        <label class="question-label">4. ¿En qué entorno ocurrió principalmente?</label>
+        <div class="radio-group radio-group--wrap">
+          <label class="radio-opt"><input type="radio" name="I4" value="No aplica"><span class="radio-custom"></span><span>No aplica</span></label>
+          <label class="radio-opt"><input type="radio" name="I4" value="Familiar/hogar"><span class="radio-custom"></span><span>Familiar/hogar</span></label>
+          <label class="radio-opt"><input type="radio" name="I4" value="Universitario"><span class="radio-custom"></span><span>Universitario</span></label>
+          <label class="radio-opt"><input type="radio" name="I4" value="Social"><span class="radio-custom"></span><span>Social</span></label>
+          <label class="radio-opt"><input type="radio" name="I4" value="Digital"><span class="radio-custom"></span><span>Digital</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">5. Impacto en su vida diaria (0–10)</label>
+        <p class="hint-text">0 = No afectó · 10 = Afectó significativamente</p>
+        <div class="slider-wrap">
+          <input type="range" class="slider" id="I5" min="0" max="10" value="0" oninput="document.getElementById('I5val').textContent=this.value">
+          <span class="slider-val" id="I5val">0</span>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-H')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-I','screen-J')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE J ══ -->
+  <section class="screen" id="screen-J">
+    <div class="block-card">
+      <div class="block-label">Bloque J</div>
+      <h2 class="block-title">Capital Académico y Vocacional</h2>
+
+      <div class="question-group">
+        <label class="question-label">1. Promedio de calificaciones en el bachillerato</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="J1" value="1"><span class="radio-custom"></span><span>Menos de 7,0</span></label>
+          <label class="radio-opt"><input type="radio" name="J1" value="2"><span class="radio-custom"></span><span>Entre 7,0 y 7,9</span></label>
+          <label class="radio-opt"><input type="radio" name="J1" value="3"><span class="radio-custom"></span><span>Entre 8,0 y 8,9</span></label>
+          <label class="radio-opt"><input type="radio" name="J1" value="4"><span class="radio-custom"></span><span>Entre 9,0 y 10,0</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">2. Tipo de institución de bachillerato</label>
+        <div class="radio-group radio-group--wrap">
+          <label class="radio-opt"><input type="radio" name="J2" value="Pública fiscal"><span class="radio-custom"></span><span>Pública fiscal</span></label>
+          <label class="radio-opt"><input type="radio" name="J2" value="Pública fiscomisional"><span class="radio-custom"></span><span>Pública fiscomisional</span></label>
+          <label class="radio-opt"><input type="radio" name="J2" value="Privada laica"><span class="radio-custom"></span><span>Privada laica</span></label>
+          <label class="radio-opt"><input type="radio" name="J2" value="Privada religiosa"><span class="radio-custom"></span><span>Privada religiosa</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">3. ¿Es primera generación universitaria?</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="J3" value="Sí"><span class="radio-custom"></span><span>Sí, soy primera generación en mi familia</span></label>
+          <label class="radio-opt"><input type="radio" name="J3" value="No"><span class="radio-custom"></span><span>No, al menos uno de mis padres cursó universidad</span></label>
+        </div>
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">4. Nivel percibido de preparación del bachillerato</label>
+        <div class="likert-scale" data-name="J4" data-labels="Muy mal,Mal,Regular,Bien,Muy bien" data-values="1,2,3,4,5"></div>
+      </div>
+
+      <div class="section-sub" style="margin-top:1.5rem">Últimas 2 semanas</div>
+      <div class="scale-legend">0 = Nunca · 1 = Rara vez · 2 = A veces · 3 = Casi siempre · 4 = Siempre</div>
+      <div class="likert-table" id="likertJ"></div>
+      <script>
+        const jItems = [
+          ["J5","Tengo claridad sobre el campo profesional al que quiero dedicarme.","(Saber en qué área laboral desea desempeñarse al graduarse.)",false],
+          ["J6","Me siento satisfecho/a con la carrera que estoy cursando.","(La carrera responde a sus intereses, habilidades o expectativas.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertJ',jItems,5));
+      </script>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-I')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-J','screen-K')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE K ══ -->
+  <section class="screen" id="screen-K">
+    <div class="block-card">
+      <div class="block-label">Bloque K</div>
+      <h2 class="block-title">Integración Institucional</h2>
+      <p class="block-desc">Últimas <strong>2 semanas</strong>.</p>
+      <div class="scale-legend">0 = Nunca · 1 = Rara vez · 2 = A veces · 3 = Casi siempre · 4 = Siempre</div>
+      <div class="likert-table" id="likertK"></div>
+      <script>
+        const kItems = [
+          ["K1","Me siento parte de esta universidad.","(Sensación de pertenencia, identidad o vínculo con la institución.)",false],
+          ["K2","Percibo que los docentes se interesan por mi aprendizaje.","(Explican con claridad, responden dudas, muestran disposición.)",false],
+          ["K3","Participo en actividades extracurriculares.","(Grupos estudiantiles, deportes, voluntariado, clubes, etc.)",false],
+          ["K4","Tengo amistades o vínculos significativos en la universidad.","(Compañeros con quienes mantenga una relación de confianza.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertK',kItems,5));
+      </script>
+
+      <div class="question-group" style="margin-top:1.5rem">
+        <label class="question-label">5. ¿Ha considerado seriamente cambiarse de carrera o abandonar sus estudios en el último mes?</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="K5" value="0"><span class="radio-custom"></span><span>No lo he considerado</span></label>
+          <label class="radio-opt"><input type="radio" name="K5" value="1"><span class="radio-custom"></span><span>Lo he pensado, pero no como decisión próxima</span></label>
+          <label class="radio-opt"><input type="radio" name="K5" value="2"><span class="radio-custom"></span><span>Lo estoy considerando activamente</span></label>
+          <label class="radio-opt"><input type="radio" name="K5" value="3"><span class="radio-custom"></span><span>Ya he iniciado algún trámite o consulta</span></label>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-J')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-K','screen-L')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE L ══ -->
+  <section class="screen" id="screen-L">
+    <div class="block-card">
+      <div class="block-label">Bloque L</div>
+      <h2 class="block-title">Capital Psicológico y Autorregulación</h2>
+      <p class="block-desc">Últimas <strong>2 semanas</strong>.</p>
+      <div class="scale-legend">0 = Nunca · 1 = Rara vez · 2 = A veces · 3 = Casi siempre · 4 = Siempre</div>
+      <div class="likert-table" id="likertL"></div>
+      <script>
+        const lItems = [
+          ["L1","Confío en mi capacidad para superar dificultades académicas.","(Creo que puedo lograrlo con esfuerzo o buscando ayuda.)",false],
+          ["L2","Cuando siento emociones negativas intensas, logro manejarlas sin que afecten mis actividades.","(Calmarse tras recibir una mala nota o manejar la frustración.)",false],
+          ["L3","Persisto ante tareas difíciles en lugar de evitarlas o rendirme.","(Insistir en resolver un ejercicio o continuar estudiando pese al cansancio.)",false],
+          ["L4","Utilizo estrategias organizadas para estudiar.","(Resúmenes, mapas conceptuales, repasar con anticipación.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertL',lItems,5));
+      </script>
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-K')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-L','screen-M')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE M ══ -->
+  <section class="screen" id="screen-M">
+    <div class="block-card">
+      <div class="block-label">Bloque M</div>
+      <h2 class="block-title">Empleabilidad y Proyección Laboral</h2>
+
+      <div class="section-sub">Experiencia y recursos profesionales</div>
+      <div class="yes-no-table" id="yesnoM">
+        <div class="yn-header">
+          <div class="yn-q">Pregunta</div>
+          <div class="yn-opts"><span>No (0)</span><span>Sí (1)</span></div>
+        </div>
+      </div>
+      <script>
+        const mBinarios = [
+          ["M1","He realizado prácticas preprofesionales o pasantías relacionadas con mi carrera."],
+          ["M2","Tengo experiencia laboral remunerada relacionada con mi campo de estudio."],
+          ["M3","Sé cómo elaborar un currículum vitae competitivo para el mercado laboral."],
+          ["M4","Cuento con una red de contactos profesionales útil para mi inserción laboral."]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderYesNoTable('yesnoM',mBinarios));
+      </script>
+
+      <div class="section-sub" style="margin-top:1.5rem">Confianza en empleabilidad (últimas 2 semanas)</div>
+      <div class="scale-legend">0 = Nunca · 1 = Rara vez · 2 = A veces · 3 = Casi siempre · 4 = Siempre</div>
+      <div class="likert-table" id="likertM"></div>
+      <script>
+        const mItems = [
+          ["M5","Confío en poder conseguir empleo en mi área profesional una vez graduado/a.","",false],
+          ["M6","Conozco las principales empresas o instituciones que contratan en mi área.","",false],
+          ["M7","Percibo que existe demanda laboral real para mi carrera en la región.","",false],
+          ["M8","La universidad me ha conectado con empleadores o ferias de empleo en el último año.","",false],
+          ["M9","Conozco los requisitos, rangos salariales y condiciones laborales de mi sector.","",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertM',mItems,5));
+      </script>
+
+      <div class="question-group" style="margin-top:1rem">
+        <label class="question-label">10. He participado en simulacros de entrevista o talleres de empleabilidad</label>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="M10" value="0"><span class="radio-custom"></span><span>No</span></label>
+          <label class="radio-opt"><input type="radio" name="M10" value="1"><span class="radio-custom"></span><span>Sí</span></label>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-L')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-M','screen-N')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE N ══ -->
+  <section class="screen" id="screen-N">
+    <div class="block-card">
+      <div class="block-label">Bloque N</div>
+      <h2 class="block-title">Entorno Digital y Tecnológico</h2>
+      <div class="scale-legend">0 = Nunca · 1 = Rara vez · 2 = A veces · 3 = Casi siempre · 4 = Siempre</div>
+      <div class="likert-table" id="likertN"></div>
+      <script>
+        const nItems = [
+          ["N1","Tengo acceso estable a internet en mi residencia durante el período académico.","(Sin interrupciones para clases virtuales o descargar materiales.)",false],
+          ["N2","Cuento con un dispositivo adecuado para mis actividades académicas.","(Computadora o tablet con la capacidad necesaria.)",false],
+          ["N3","Me considero capaz de usar con fluidez las herramientas digitales de mis clases.","(Videoconferencia, EVA, hojas de cálculo, software especializado.)",false],
+          ["N4","El uso de redes sociales o pantallas interfiere con mi tiempo efectivo de estudio.","(Tiempo planeado para estudiar pero usado en entretenimiento digital.)",true],
+          ["N5","Siento que la brecha tecnológica me pone en desventaja académica.","(Otros tienen mejores equipos, conexión o habilidades digitales.)",true]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertN',nItems,5));
+      </script>
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-M')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-N','screen-O')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE O ══ -->
+  <section class="screen" id="screen-O">
+    <div class="block-card">
+      <div class="block-label">Bloque O</div>
+      <h2 class="block-title">Salud Física, Sueño y Hábitos</h2>
+      <p class="block-desc">Últimas <strong>2 semanas</strong>.</p>
+
+      <div class="question-group">
+        <label class="question-label">1. Horas de sueño promedio por noche</label>
+        <input type="number" class="input-text" id="O1" min="2" max="14" placeholder="Ej: 7">
+      </div>
+
+      <div class="question-group">
+        <label class="question-label">2. Calidad de sueño</label>
+        <div class="likert-scale" data-name="O2" data-labels="Muy mala,Mala,Regular,Buena,Muy buena" data-values="1,2,3,4,5"></div>
+      </div>
+
+      <div class="scale-legend" style="margin-top:1rem">0 = Nunca · 1 = Rara vez · 2 = A veces · 3 = Casi siempre · 4 = Siempre</div>
+      <div class="likert-table" id="likertO"></div>
+      <script>
+        const oItems = [
+          ["O3","Me despierto durante la noche con dificultad para volver a dormir.","(Despertar más de una vez por noche y tardar en conciliar el sueño.)",true],
+          ["O4","Realizo actividad física de al menos 30 minutos continuos.","(Caminata rápida, trote, deporte o ejercicio que eleve el ritmo cardíaco.)",false],
+          ["O5","Mi alimentación durante los días de clases es equilibrada y suficiente.","(Comidas completas, sin saltarlas por falta de tiempo o dinero.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertO',oItems,5));
+      </script>
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-N')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-O','screen-P')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE P ══ -->
+  <section class="screen" id="screen-P">
+    <div class="block-card">
+      <div class="block-label">Bloque P</div>
+      <h2 class="block-title">Gestión del Tiempo y Procrastinación</h2>
+      <p class="block-desc">Últimas <strong>2 semanas</strong>.</p>
+      <div class="scale-legend">0 = Nunca · 1 = Rara vez · 2 = A veces · 3 = Casi siempre · 4 = Siempre</div>
+      <div class="likert-table" id="likertP"></div>
+      <script>
+        const pItems = [
+          ["P1","Dedico efectivamente al estudio las horas que planeo cada semana.","(Mis planes de estudio se cumplen en la práctica.)",false],
+          ["P2","Pospongo tareas o sesiones de estudio hasta que ya no tengo más tiempo.","(Comenzar a estudiar para un examen el día anterior.)",true],
+          ["P3","Las horas de trabajo remunerado interfieren con mis obligaciones académicas.","(No poder asistir a clases, llegar tarde a entregas o estudiar con cansancio.)",true],
+          ["P4","Utilizo alguna herramienta de planificación para organizar mi semana.","(Agenda, calendario digital, app de tareas.)",false]
+        ];
+        document.addEventListener('DOMContentLoaded',()=>renderLikertTable('likertP',pItems,5));
+      </script>
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-O')">← Anterior</button>
+        <button class="btn-primary" onclick="nextBlock('screen-P','screen-final')">Siguiente →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BLOQUE FINAL ══ -->
+  <section class="screen" id="screen-final">
+    <div class="block-card">
+      <div class="block-label">Bloque Final</div>
+      <h2 class="block-title">Comentario Abierto</h2>
+      <p class="block-desc">Opcional. Si desea compartir cómo las actividades recreativas, los viajes o la vida universitaria influyen en su bienestar emocional.</p>
+      <div class="question-group">
+        <textarea class="input-textarea" id="comentario" rows="5" placeholder="Escriba aquí su comentario (opcional)..."></textarea>
+      </div>
+      <div class="nav-row">
+        <button class="btn-secondary" onclick="goToScreen('screen-P')">← Anterior</button>
+        <button class="btn-primary btn-submit" id="submitBtn" onclick="submitSurvey()">Enviar encuesta ✓</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PANTALLA: ENVIANDO ══ -->
+  <section class="screen" id="screen-sending">
+    <div class="sending-card">
+      <div class="spinner"></div>
+      <h2>Enviando tus respuestas...</h2>
+      <p>Por favor no cierres esta ventana.</p>
+    </div>
+  </section>
+
+  <!-- ══ PANTALLA: RESULTADOS ══ -->
+  <section class="screen" id="screen-results">
+    <div class="block-card">
+      <div class="results-header">
+        <div class="results-icon">✓</div>
+        <h2>¡Encuesta completada!</h2>
+        <p>Gracias por tu participación. Tus respuestas han sido registradas correctamente.</p>
+      </div>
+      <div id="resultsContent"></div>
+      <div class="crisis-box">
+        <strong>🆘 Recursos de apoyo disponibles:</strong><br>
+        <span>Línea de Crisis MSP Ecuador: <strong>1800-4444-8</strong></span><br>
+        <span>Bienestar Estudiantil UNACH: <strong>bienestar@unach.edu.ec</strong></span><br>
+        <span>Centro de Apoyo Psicológico UNACH: extensión interna disponible en tu facultad</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer-bottom">
+  <span>© 2026 Universidad Nacional de Chimborazo · Proyecto Integral de Bienestar Estudiantil</span>
+  <span>Datos protegidos conforme a la LOPDP Ecuador</span>
+</footer>
+
+<script src="js/survey.js"></script>
+</body>
+</html>
