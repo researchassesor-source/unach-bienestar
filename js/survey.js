@@ -179,6 +179,20 @@ function renderLikertScale(el) {
   });
 }
 
+function handleConsent(value) {
+  if (value === 'si') {
+    document.getElementById('consent-no-msg').style.display = 'none';
+    goToScreen('screen-A');
+  } else {
+    document.getElementById('consent-no-msg').style.display = 'block';
+    // Ocultar botón Continuar si existe
+    const nav = document.getElementById('consent-nav');
+    if (nav) nav.style.display = 'none';
+  }
+}
+
+
+
 function renderYesNoTable(containerId, items) {
   const container = document.getElementById(containerId);
   if (!container) return;
