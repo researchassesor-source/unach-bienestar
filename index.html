@@ -99,21 +99,43 @@
         </div>
       </div>
 
-<div class="question-group" id="modalidad-group" style="display:none;">
-  <label class="question-label">Modalidad de participación</label>
+<!-- Consentimiento -->
+<div class="question-group">
+  <label class="question-label">¿Acepta participar en este estudio?</label>
   <div class="radio-group">
-    <label class="radio-opt">
-      <input type="radio" name="modalidad" value="anonima" checked>
+    <label class="radio-opt" id="consent-yes">
+      <input type="radio" name="consent" value="si" onchange="handleConsent(this)">
       <span class="radio-custom"></span>
-      <span>Deseo participar de forma completamente anónima</span>
+      <span>Sí, acepto participar</span>
     </label>
-    <label class="radio-opt">
-      <input type="radio" name="modalidad" value="institucional">
+    <label class="radio-opt" id="consent-no">
+      <input type="radio" name="consent" value="no" onchange="handleConsent(this)">
       <span class="radio-custom"></span>
-      <span>Acepto que mis respuestas se asocien a mi registro institucional (solo fines de apoyo)</span>
+      <span>No, no acepto participar</span>
     </label>
   </div>
+
+  <div id="consent-no-msg" class="alert-info" style="display:none">
+    Gracias por tu tiempo. La encuesta ha finalizado. Puedes cerrar esta ventana.
+  </div>
 </div>
+
+<!-- Modalidad OCULTA pero funcional -->
+<div id="modalidad-group" style="display:none;">
+  <input type="radio" name="modalidad" value="anonima" checked>
+  <input type="radio" name="modalidad" value="institucional">
+</div>
+
+<!-- Script para asegurar activación -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const opcion = document.querySelector('input[name="modalidad"][value="anonima"]');
+  if (opcion) {
+    opcion.checked = true;
+    opcion.dispatchEvent(new Event('change'));
+  }
+});
+</script>
 
 
       
