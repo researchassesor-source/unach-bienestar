@@ -120,22 +120,8 @@
   </div>
 </div>
 
-<!-- Modalidad OCULTA pero funcional -->
-<div id="modalidad-group" style="display:none;">
-  <input type="radio" name="modalidad" value="anonima" checked>
-  <input type="radio" name="modalidad" value="institucional">
-</div>
 
-<!-- Script para asegurar activación -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const opcion = document.querySelector('input[name="modalidad"][value="anonima"]');
-  if (opcion) {
-    opcion.checked = true;
-    opcion.dispatchEvent(new Event('change'));
-  }
-});
-</script>
+
 
 
       
