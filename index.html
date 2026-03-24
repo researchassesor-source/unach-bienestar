@@ -80,6 +80,27 @@
         </div>
       </div>
 
+
+      <!-- Consentimiento -->
+<div class="question-group">
+  <label class="question-label">¿Acepta participar en este estudio?</label>
+  <div class="radio-group" style="flex-direction: column; gap: 0.75rem;">
+    <label class="radio-opt" onclick="handleConsent('si')">
+      <input type="radio" name="consent" value="si">
+      <span class="radio-custom"></span>
+      <span>Sí, acepto participar</span>
+    </label>
+    <label class="radio-opt" onclick="handleConsent('no')">
+      <input type="radio" name="consent" value="no">
+      <span class="radio-custom"></span>
+      <span>No, no acepto participar</span>
+    </label>
+  </div>
+</div>
+
+<div id="consent-no-msg" class="alert-info" style="display:none">
+  Gracias por tu tiempo. La encuesta ha finalizado. Puedes cerrar esta ventana.
+</div>
       
 
 <!-- Consentimiento -->
